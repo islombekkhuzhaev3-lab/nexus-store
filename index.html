@@ -1,39 +1,147 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="cyberpunk">
+<html lang="uz" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Antigravity Hub - E-commerce & Creative Social Ecosystem</title>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Hub — Ultimate Cyber Social Ecosystem</title>
+    <!-- Tailwind CSS кутубхонаси -->
+    <script src="https://tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#05050A',
+                        brandCard: '#0F111A',
+                        brandCyan: '#00F2FE',
+                        brandPink: '#FF007A',
+                        brandOrange: '#F58220',
+                        brandNeon: '#10B981'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
+<body class="bg-brandDark text-gray-100 font-sans min-h-screen flex flex-col justify-between selection:bg-brandCyan selection:text-black">
 
-  <!-- Top Navigation Bar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="logo">
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">ANTIGRAVITY <span class="logo-accent">HUB</span></span>
-      </div>
-      <nav class="nav-links">
-        <a href="#hero" class="active">Лента</a>
-        <a href="#marketplace">Дўкон</a>
-        <a href="#ads">Эълонлар</a>
-        <a href="#profile">Профиль</a>
-      </nav>
-      <div class="nav-actions">
-        <button id="theme-toggle" class="btn-theme" title="Дизайнни алмаштириш">
-          <i data-lucide="sunset" class="icon-sun"></i>
-          <i data-lucide="moon" class="icon-moon"></i>
-        </button>
-        <button id="cart-btn" class="btn-cart">
+    <!-- HEADER PANEL -->
+    <header class="border-b border-gray-900 bg-brandDark/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="text-xl font-black bg-gradient-to-r from-brandOrange via-brandPink to-brandCyan bg-clip-text text-transparent tracking-widest">
+                ANTIGRAVITY OK
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-brandCard border border-gray-800 px-2.5 py-1 rounded-xl text-xs font-bold text-brandPink flex items-center gap-1">
+                    🪙 <span id="cyber-coins">100</span> NC
+                </div>
+                <button onclick="toggleCartModal()" class="relative bg-brandCard border border-gray-800 px-3 py-1 rounded-xl text-xs font-medium text-gray-200 flex items-center space-x-1">
+                    <span>🛒</span>
+                    <span id="cart-count" class="bg-brandCyan text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- АСОСИЙ МАКЕТ (GRID) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- ЧАП ТОМОН: ПРОФИЛЬ ВА РАДИО -->
+        <aside class="space-y-6 lg:col-span-1">
+            <!-- OK.ru услубидаги Профиль -->
+            <div class="bg-brandCard border border-gray-800 p-5 rounded-2xl text-center">
+                <div class="w-16 h-16 bg-gray-950 rounded-full mx-auto mb-3 flex items-center justify-center text-3xl border-2 border-brandOrange">🚗</div>
+                <h3 class="font-bold text-sm text-white">Cyber Driver</h3>
+                <p class="text-[10px] text-brandNeon mt-0.5">● Онлайн</p>
+                <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-900 text-xs">
+                    <div>
+                        <span class="block font-bold text-white" id="ok-klass-count">42</span>
+                        <span class="text-gray-500 text-[10px]">Класс олган</span>
+                    </div>
+                    <div>
+                        <span class="block font-bold text-white">128</span>
+                        <span class="text-gray-500 text-[10px]">Дўстлар</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cyber-Lofi Радио -->
+            <div class="bg-brandCard border border-gray-800 p-4 rounded-2xl space-y-3">
+                <div class="flex items-center space-x-3">
+                    <span class="text-xl animate-spin" style="animation-duration: 8s;">📻</span>
+                    <div>
+                        <h4 class="text-xs font-bold text-white">CYBER-LOFI RADIO</h4>
+                        <p id="radio-status" class="text-[10px] text-gray-500">Режим: Тўхтатилган</p>
+                    </div>
+                </div>
+                <button onclick="toggleRadio()" id="radio-btn" class="w-full bg-gray-800 hover:bg-brandPink text-[11px] font-bold py-2 rounded-xl transition-all">Плеерни ёқиш</button>
+                <audio id="cyber-audio" src="https://nightride.fm" crossorigin="anonymous"></audio>
+            </div>
+        </aside>
+
+        <!-- МАРКАЗ КЎРИНИШИ: АИ, КАТАЛОГ ВА МЕҲМОНЛАР -->
+        <main class="lg:col-span-3 space-y-6">
+            
+            <!-- AI AUTO-STYLIST -->
+            <section class="bg-brandCard border border-gray-800 p-5 rounded-2xl">
+                <h3 class="text-xs font-bold text-brandCyan mb-2 flex items-center gap-1.5">🤖 AI Стилист (Авто-Танлов)</h3>
+                <p class="text-[11px] text-gray-400 mb-4">Машина ранги ва русумини ёзинг, АИ сизга плёнка турини тавсия қилади.</p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="car-model" placeholder="Машина русуми (н: BYD)" class="flex-1 bg-brandDark border border-gray-800 text-xs px-3 py-2.5 rounded-xl text-white outline-none">
+                    <input type="text" id="car-color" placeholder="Ранги (н: Қора)" class="flex-1 bg-brandDark border border-gray-800 text-xs px-3 py-2.5 rounded-xl text-white outline-none">
+                    <button onclick="askAIStylist()" class="bg-brandCyan text-black font-bold text-xs px-4 py-2.5 rounded-xl">Таҳлил</button>
+                </div>
+                <div id="ai-stylist-result" class="hidden mt-3 bg-brandDark/50 border border-gray-800 p-3 rounded-xl text-xs text-gray-300"></div>
+            </section>
+
+            <!-- OK.ru МЕҲМОНЛАР БЎЛИМИ (ГОСТИ) -->
+            <section class="bg-brandCard border border-gray-800 p-5 rounded-2xl">
+                <h3 class="text-xs font-bold text-brandOrange mb-3">👁️ Саҳифа меҳмонлари (Гости)</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
+                    <div class="bg-brandDark/50 p-2.5 rounded-xl border border-gray-950"><div class="text-xl">🤖</div><span class="font-bold text-white block">Nexus AI</span><span class="text-[9px] text-brandOrange">Янги</span></div>
+                    <div class="bg-brandDark/50 p-2.5 rounded-xl border border-gray-950"><div class="text-xl">😎</div><span class="font-bold text-white block">Бекзод PPF</span><span class="text-[9px] text-gray-500">14:20</span></div>
+                    <div class="bg-brandDark/50 p-2.5 rounded-xl border border-gray-950"><div class="text-xl">👑</div><span class="font-bold text-white block">Tuning_Uz</span><span class="text-[9px] text-gray-500">Кеча</span></div>
+                    <div class="bg-brandDark/50 p-2.5 rounded-xl border border-gray-950"><div class="text-xl">👾</div><span class="font-bold text-white block">Hacker_01</span><span class="text-[9px] text-gray-500">12 Июн</span></div>
+                </div>
+            </section>
+
+            <!-- ДЎКОН КАТАЛОГИ -->
+            <section class="space-y-4">
+                <h3 class="text-xs font-bold text-gray-400 tracking-wider">ПРEМИУМ ПЛЁНКАЛАР КАТАЛОГИ</h3>
+                <div id="catalog-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- САВАТЧА ВА ТЕЗКОР БУЮРТМА МОДАЛИ -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-gray-800 rounded-2xl w-full max-w-sm p-4 space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                <h3 class="text-xs font-bold">🛒 Саватча</h3>
+                <button onclick="toggleCartModal()" class="text-gray-400 text-lg">&times;</button>
+            </div>
+            <div id="cart-items" class="space-y-2 max-h-40 overflow-y-auto"></div>
+            <div class="flex justify-between items-center text-xs pt-2 border-t border-gray-800">
+                <span class="text-gray-400">Жами:</span>
+                <span id="cart-total" class="font-black text-brandCyan">$0.00</span>
+            </div>
+            <div class="space-y-1.5">
+                <input type="tel" id="user-phone" placeholder="+998 (90) 123-45-67" class="w-full bg-brandDark border border-gray-800 text-xs px-3 py-2 rounded-xl text-white outline-none">
+            </div>
+            <button onclick="sendQuickOrder()" class="w-full bg-gradient-to-r from-brandOrange to-brandPink text-white font-bold py-2.5 rounded-xl text-xs">🚀 ТEЗКОР БУЮРТМА БEРИШ</button>
+        </div>
+    </div>
+
+    <footer class="border-t border-gray-900 bg-brandDark/80 py-4 text-center text-[11px] text-gray-600 w-full">
+        © 2026 Antigravity OK — Ижтимоий Кибер Тизим.
+    </footer>
+
+    <!-- Скрипт файлини улаймиз -->
+    <script src="app.js"></script>
+</body>
+</html>
           <i data-lucide="shopping-cart"></i>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
