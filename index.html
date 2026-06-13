@@ -2,38 +2,56 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Nexus Store | Super Platform</title>
+    <title>Nexus Market | OK Style</title>
     <style>
-        body { background: #18191a; color: #e4e6eb; font-family: sans-serif; margin: 0; }
-        .container { max-width: 600px; margin: auto; padding: 20px; }
+        /* OK.ru Classic Style */
+        body { background: #edeff4; font-family: Tahoma, sans-serif; margin: 0; color: #333; }
+        .header { background: #ee8208; color: white; padding: 10px; text-align: center; font-weight: bold; }
+        .container { max-width: 900px; margin: auto; display: flex; gap: 20px; padding: 10px; }
         
-        /* Ijtimoiy tarmoq tugmalari (OK.ru/Somon uslubi) */
-        .social-bar { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-social { flex: 1; padding: 10px; border-radius: 5px; text-align: center; text-decoration: none; font-weight: bold; }
+        /* Chap menyu */
+        .sidebar { width: 250px; background: white; padding: 15px; border-radius: 5px; }
+        
+        /* Asosiy qism */
+        .main-content { flex: 1; }
+        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 1px 3px #ccc; }
+        
+        /* AI & Social */
+        .widget { background: #f9f9f9; padding: 15px; border: 1px solid #ddd; margin-bottom: 10px; }
+        .btn { display: block; padding: 10px; margin: 5px 0; text-align: center; border-radius: 4px; text-decoration: none; font-weight: bold; }
         .tg { background: #0088cc; color: white; }
         .wa { background: #25d366; color: white; }
-        
-        /* AI Gemini Chat (Integratsiya uchun joy) */
-        .ai-chat { background: #242526; padding: 20px; border-radius: 10px; border: 1px solid #3e4042; }
-        .ai-input { width: 100%; padding: 10px; background: #3a3b3c; border: none; color: white; border-radius: 5px; }
     </style>
 </head>
 <body>
 
+<div class="header">NEXUS MARKET - OK STYLE</div>
+
 <div class="container">
-    <h1>Nexus Market</h1>
-    
-    <!-- Somon.tj uslubidagi aloqa -->
-    <div class="social-bar">
-        <a href="https://t.me/islombek_khuzhaev" class="btn-social tg">Telegram</a>
-        <a href="https://wa.me/yournumber" class="btn-social wa">WhatsApp</a>
+    <!-- Chap Menyusi -->
+    <div class="sidebar">
+        <h3>Profil</h3>
+        <p>Islombek Khuzhaev</p>
+        <hr>
+        <a href="#" class="btn tg">Telegram</a>
+        <a href="#" class="btn wa">WhatsApp</a>
     </div>
 
-    <!-- AI Gemini Integratsiya qismi -->
-    <div class="ai-chat">
-        <h3>AI Gemini Assistant</h3>
-        <p>Savolingizni yozing (AI yordami):</p>
-        <input type="text" class="ai-input" placeholder="Mahsulot haqida so'rang...">
+    <!-- Asosiy Lenta -->
+    <div class="main-content">
+        <!-- Gemini AI Integratsiya qismi -->
+        <div class="card widget">
+            <h3>Gemini AI Assistant</h3>
+            <input type="text" style="width:80%; padding:5px;" placeholder="Savol bering...">
+            <button>Yuborish</button>
+        </div>
+
+        <!-- E'lonlar (Somon.tj uslubi) -->
+        <div class="card">
+            <h3>Mahsulot nomi</h3>
+            <p>Narxi: 150 $ | Holati: Yangi</p>
+            <button>Batafsil</button>
+        </div>
     </div>
 </div>
 
