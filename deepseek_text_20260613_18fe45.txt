@@ -1,0 +1,9 @@
+nexus-market/
+├── index.html          # Асосий файл (юқоридаги тўлиқ код)
+├── vercel.json         # Vercel созламалари
+├── netlify.toml        # Netlify созламалари
+├── package.json        # Node.js созламалари
+├── .gitignore          # Git га кирмайдиганлар
+├── robots.txt          # SEO
+├── sitemap.xml         # Қидирув харитаси
+└── .env                # Муҳит ўзгарувчилари (серверда)

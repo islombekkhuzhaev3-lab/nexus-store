@@ -1,0 +1,17 @@
+{
+  "name": "nexus-market",
+  "version": "2.0.0",
+  "description": "NEXUS MARKET - Instagram + OK.ru + Somon.tj uslubidagi ijtimoiy platforma",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'No build step required'",
+    "dev": "serve ."
+  },
+  "keywords": ["social", "marketplace", "ai", "telegram", "whatsapp"],
+  "author": "NEXUS TEAM",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}

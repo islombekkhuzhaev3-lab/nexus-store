@@ -1,0 +1,8 @@
+# DeepSeek AI
+DEEPSEEK_API_KEY=your_api_key_here
+
+# Telegram
+TELEGRAM_BOT_TOKEN=your_bot_token
+
+# WhatsApp (Business API учун)
+WHATSAPP_API_TOKEN=your_token
