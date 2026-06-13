@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS STORE | Авто ҳамжамият</title>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: #262626; padding-bottom: 70px; }
+    .header { position: fixed; top: 0; left: 0; right: 0; background: white; border-bottom: 1px solid #dbdbdb; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; z-index: 100; }
+    .logo { font-weight: 700; font-size: 20px; background: linear-gradient(135deg, #ff6200, #00c8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .header-icons i { font-size: 22px; margin-left: 18px; color: #262626; cursor: pointer; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; padding: 8px 12px; z-index: 100; }
+    .nav-item { background: none; border: none; font-size: 22px; color: #8e8e8e; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+    .nav-item.active { color: #0095f6; }
+    .nav-item span { font-size: 10px; margin-top: 2px; }
+    .container { max-width: 600px; margin: 60px auto 0; padding: 0 12px; }
+    .page { display: none; flex-direction: column; gap: 12px; }
+    .page.active { display: flex; }
+    .stories { display: flex; gap: 12px; overflow-x: auto; background: white; border-radius: 12px; padding: 8px; margin-bottom: 8px; }
+    .story { text-align: center; cursor: pointer; }
+    .story-ring { width: 64px; height: 64px; background: linear-gradient(45deg, #f09433, #d62976, #962fbf); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .story-img { width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; background-color: #f2f2f2; }
+    .story-name { font-size: 11px; }
+    .post { background: white; border-radius: 12px; border: 1px solid #dbdbdb; margin-bottom: 12px; }
+    .post-header { display: flex; align-items: center; padding: 10px 12px; gap: 10px; }
+    .post-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #ff6200, #00c8ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
+    .post-user { font-weight: 600; font-size: 13px; }
+    .post-time { font-size: 10px; color: #8e8e8e; }
+    .post-img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .post-actions { display: flex; gap: 16px; padding: 8px 12px; }
+    .post-actions i { font-size: 24px; cursor: pointer; }
+    .post-likes { font-weight: 600; font-size: 13px; padding: 0 12px 4px; }
+    .post-caption { padding: 0 12px 10px; font-size: 13px; }
+    .composer { background: white; border: 1px solid #dbdbdb; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .composer-input { width: 100%; border: none; outline: none; font-size: 14px; font-family: inherit; resize: none; }
+    .composer-actions { display: flex; justify-content: space-between; margin-top: 8px; }
+    .composer-btn { background: #0095f6; border: none; color: white; font-weight: 600; padding: 6px 16px; border-radius: 8px; cursor: pointer; }
+    .share-btn { background: #229ED9; margin-right: 6px; }
+    .wa-btn { background: #25D366; }
+    .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .product-card { background: white; border-radius: 12px; border: 1px solid #dbdbdb; overflow: hidden; }
+    .product-img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .product-info { padding: 8px; }
+    .product-name { font-weight: 600; }
+    .product-price { font-weight: 700; color: #ff6200; margin: 4px 0; }
+    .product-btn { width: 100%; background: #efefef; border: none; padding: 6px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .chat-messages { background: white; border-radius: 12px; border: 1px solid #dbdbdb; height: 350px; overflow-y: auto; padding: 12px; }
+    .message { display: flex; margin-bottom: 12px; }
+    .message.user { justify-content: flex-end; }
+    .message-bubble { background: #efefef; padding: 8px 12px; border-radius: 20px; max-width: 80%; font-size: 13px; }
+    .message.user .message-bubble { background: #0095f6; color: white; }
+    .chat-input { display: flex; gap: 8px; margin-top: 8px; }
+    .chat-input input { flex: 1; border: 1px solid #dbdbdb; border-radius: 24px; padding: 10px 14px; outline: none; }
+    .chat-input button { background: #0095f6; border: none; border-radius: 24px; padding: 0 18px; color: white; font-weight: 600; cursor: pointer; }
+    .settings-card { background: white; border-radius: 12px; border: 1px solid #dbdbdb; margin-bottom: 12px; }
+    .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #efefef; flex-wrap: wrap; gap: 8px; }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item input, .settings-item select { border: 1px solid #dbdbdb; border-radius: 8px; padding: 6px 10px; font-family: inherit; }
+    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 200; visibility: hidden; opacity: 0; transition: 0.2s; }
+    .modal.open { visibility: visible; opacity: 1; }
+    .modal-content { background: white; width: 280px; border-radius: 16px; padding: 20px; text-align: center; }
+    .modal-content input { width: 100%; margin: 8px 0; padding: 8px; border: 1px solid #dbdbdb; border-radius: 8px; }
+    .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 8px 16px; border-radius: 30px; font-size: 13px; z-index: 200; opacity: 0; transition: 0.2s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .country-select { width: 100%; margin-bottom: 8px; padding: 8px; border-radius: 8px; border: 1px solid #dbdbdb; }
+    .auto-setup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 300; text-align: center; max-width: 90%; width: 320px; }
+    .auto-setup button { margin-top: 12px; padding: 8px 16px; background: #0095f6; border: none; border-radius: 8px; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">NEXUS STORE</div>
+  <div class="header-icons">
+    <i class="fa-regular fa-heart" onclick="toastMsg('❤️','Like bildirish')"></i>
+    <i class="fa-regular fa-user" onclick="openProfileModal()"></i>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-item active" data-page="feed"><i class="fa-solid fa-house"></i><span>Bosh</span></button>
+  <button class="nav-item" data-page="shop"><i class="fa-solid fa-store"></i><span>Do'kon</span></button>
+  <button class="nav-item" data-page="music"><i class="fa-solid fa-music"></i><span>Musiqa</span></button>
+  <button class="nav-item" data-page="ai"><i class="fa-solid fa-robot"></i><span>AI</span></button>
+  <button class="nav-item" data-page="settings"><i class="fa-solid fa-gear"></i><span>Sozlamalar</span></button>
+</div>
+
+<div class="container">
+  <div id="feed-page" class="page active">
+    <div class="stories" id="stories-container"></div>
+    <div class="composer">
+      <textarea rows="1" class="composer-input" id="postInput" placeholder="Nima bo'layapti?"></textarea>
+      <div class="composer-actions">
+        <div><button class="composer-btn share-btn" onclick="shareToTelegram()"><i class="fab fa-telegram"></i> Telegram</button>
+        <button class="composer-btn wa-btn" onclick="shareToWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp</button></div>
+        <button class="composer-btn" onclick="createPost()">Yuborish</button>
+      </div>
+    </div>
+    <div id="posts-list"></div>
+  </div>
+  <div id="shop-page" class="page"><div class="shop-grid" id="shop-grid"></div><button class="composer-btn" style="width:100%; margin-top:8px;" onclick="viewCart()">🛒 Savat (<span id="cartCount">0</span>)</button></div>
+  <div id="music-page" class="page"><div class="post" style="padding:12px;"><div style="font-weight:700;" id="currentTrackName">Antigravity Drift</div><div style="font-size:12px; color:#8e8e8e;" id="currentTrackArtist">DJ Antigravity</div><progress id="music-progress" value="0" max="100" style="width:100%; height:4px; margin:8px 0;"></progress><div style="display:flex; gap:20px; justify-content:center;"><i class="fa-solid fa-backward-step" onclick="prevTrack()"></i><i class="fa-solid fa-play" id="playPauseIcon" onclick="togglePlay()"></i><i class="fa-solid fa-forward-step" onclick="nextTrack()"></i></div></div><div id="playlist-container"></div></div>
+  <div id="ai-page" class="page"><div class="chat-messages" id="ai-messages"><div class="message"><div class="message-bubble">🤖 Salom! NEXUS STORE AI yordamchisi.</div></div></div><div class="chat-input"><input type="text" id="ai-input" placeholder="Savolingiz..."><button onclick="sendAIMessage()">Yuborish</button></div></div>
+  <div id="settings-page" class="page"><div class="settings-card"><div class="settings-item"><span>👤 Ism</span><input type="text" id="user-name" placeholder="Ismingiz"></div><div class="settings-item"><span>✈️ Telegram @username</span><input type="text" id="tg-username" placeholder="@nexusstore"></div><div class="settings-item"><span>💬 WhatsApp raqam</span><input type="text" id="wa-number" placeholder="+998901234567"></div><div class="settings-item"><span>🔑 Gemini API Key</span><input type="password" id="gemini-key" placeholder="AIzaSy..."></div><div class="settings-item"><button class="composer-btn" onclick="saveSettings()">Saqlash</button><button class="composer-btn" style="background:#8e8e8e;" onclick="logout()">Chiqish</button></div><div class="settings-item"><button class="composer-btn" onclick="loginWithGoogle()">🅶 Google</button><button class="composer-btn" style="background:#1877F2;" onclick="loginWithFacebook()">📘 Facebook</button><button class="composer-btn" style="background:#34B7F1;" onclick="showPhoneLogin()">📱 Telefon</button></div></div><div class="settings-card"><div class="settings-item"><span>📦 Buyurtmalar</span><button class="composer-btn" onclick="simulatePayment()">💳 Test to'lov</button></div></div></div>
+</div>
+
+<div id="phoneModal" class="modal"><div class="modal-content"><h4>📱 Telefon orqali kirish</h4><select id="countryCode" class="country-select"><option value="+998">🇺🇿 O‘zbekiston (+998)</option><option value="+1">🇺🇸 AQSH (+1)</option><option value="+44">🇬🇧 UK (+44)</option><option value="+7">🇷🇺 Rossiya (+7)</option><option value="+90">🇹🇷 Turkiya (+90)</option><option value="+49">🇩🇪 Germaniya (+49)</option><option value="+33">🇫🇷 Fransiya (+33)</option><option value="+34">🇪🇸 Ispaniya (+34)</option><option value="+39">🇮🇹 Italiya (+39)</option><option value="+971">🇦🇪 BAA (+971)</option><option value="+996">🇰🇬 Qirg‘iziston (+996)</option><option value="+992">🇹🇯 Tojikiston (+992)</option><option value="+993">🇹🇲 Turkmaniston (+993)</option><option value="+994">🇦🇿 Ozarbayjon (+994)</option><option value="+380">🇺🇦 Ukraina (+380)</option></select><input type="tel" id="phoneNumber" placeholder="90 123 45 67"><div id="recaptcha-container"></div><button id="sendCodeBtn" onclick="sendVerificationCode()">Kod yuborish</button><div id="verifySection" style="display:none; margin-top:8px;"><input type="text" id="codeInput" placeholder="6 xonali kod"><button onclick="verifyCode()">Tasdiqlash</button></div><button onclick="closePhoneModal()">Bekor qilish</button></div></div>
+
+<div id="toastMsg" class="toast"></div>
+<div id="profileModal" class="modal"><div class="modal-content"><h4>Profilni tahrirlash</h4><input type="text" id="modal-name" placeholder="Ism"><button onclick="saveProfileModal()">Saqlash</button><button onclick="closeModal()">Bekor</button></div></div>
+
+<!-- Automatic Firebase Setup -->
+<div id="autoSetup" class="auto-setup">
+  <h3>⚡ Avtomatik sozlash</h3>
+  <p>Firebase ulanishi avtomatik ravishda sozlanmoqda...</p>
+  <div id="setupStatus">🔧 Tayyorlanmoqda...</div>
+  <button onclick="retrySetup()" style="display:none" id="retryBtn">Qayta urinish</button>
+</div>
+
+<script>
+// ============ AVTOMATIK FIREBASE SOZLASH ============
+// Bu funksiya avtomatik ravishda Firebase emulator yoki demo rejimida ishlaydi
+// Haqiqiy Firebase uchun quyidagi config ni o'zgartiring
+
+let app, auth, db;
+let currentUser = null;
+let posts = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let tgUsername = localStorage.getItem("tgUsername") || "";
+let waNumber = localStorage.getItem("waNumber") || "";
+let geminiKey = localStorage.getItem("geminiKey") || "";
+
+// Demo mode uchun local storage (Firebase bo'lmaganda)
+let demoMode = true;
+let demoPosts = [
+  { id: 1, userName: "Cyber Driver", userAvatar: "🚗", text: "Porsche 911 GT3 RS — Gloss PPF o'rnatildi! 🔥", createdAt: new Date(), likes: 124, likedBy: [] },
+  { id: 2, userName: "Tuning_Uz", userAvatar: "🏁", text: "Satin PPF ajoyib himoya! Tavsiya etaman.", createdAt: new Date(Date.now() - 86400000), likes: 58, likedBy: [] }
+];
+
+async function autoSetupFirebase() {
+  const setupDiv = document.getElementById("autoSetup");
+  const statusDiv = document.getElementById("setupStatus");
+  
+  // Avval localStorage dan saqlangan Firebase config ni tekshirish
+  let savedConfig = localStorage.getItem("firebaseConfig");
+  
+  if(savedConfig) {
+    try {
+      let config = JSON.parse(savedConfig);
+      statusDiv.innerHTML = "✅ Firebase config topildi! Ulanish...";
+      await initFirebase(config);
+      demoMode = false;
+      setupDiv.style.display = "none";
+      return;
+    } catch(e) { console.log("Saved config error", e); }
+  }
+  
+  // Demo rejimda ishlatish uchun local storage
+  statusDiv.innerHTML = "📱 Demo rejimda ishga tushirilmoqda...<br><small>(Haqiqiy Firebase uchun config kiriting)</small>";
+  
+  // Local storage demo auth
+  setupDemoAuth();
+  
+  setTimeout(() => {
+    setupDiv.style.display = "none";
+  }, 2000);
+}
+
+function setupDemoAuth() {
+  // Demo login funksiyalari
+  window.loginWithGoogle = function() {
+    let demoUser = { uid: "demo123", displayName: "Demo User", phoneNumber: null };
+    currentUser = demoUser;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    toastMsg("✅", "Demo Google orqali kirdingiz");
+    loadPosts();
+    closePhoneModal();
+  };
+  window.loginWithFacebook = function() {
+    let demoUser = { uid: "demo456", displayName: "FB User", phoneNumber: null };
+    currentUser = demoUser;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    toastMsg("✅", "Demo Facebook orqali kirdingiz");
+    loadPosts();
+    closePhoneModal();
+  };
+  window.sendVerificationCode = function() {
+    toastMsg("📲", "Demo: 123456 kodini kiriting");
+    document.getElementById("sendCodeBtn").style.display = "none";
+    document.getElementById("verifySection").style.display = "block";
+  };
+  window.verifyCode = function() {
+    let code = document.getElementById("codeInput").value;
+    if(code === "123456") {
+      let demoUser = { uid: "demo789", displayName: "Phone User", phoneNumber: "+998901234567" };
+      currentUser = demoUser;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      toastMsg("✅", "Demo telefon orqali kirdingiz");
+      closePhoneModal();
+      loadPosts();
+    } else {
+      toastMsg("❌", "Noto'g'ri kod. Demo uchun 123456");
+    }
+  };
+  
+  // LocalStorage dan foydalanuvchini yuklash
+  let savedUser = localStorage.getItem("currentUser");
+  if(savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+    } catch(e) {}
+  }
+  
+  loadPosts();
+}
+
+async function initFirebase(config) {
+  try {
+    firebase.initializeApp(config);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    
+    // Haqiqiy auth handler
+    auth.onAuthStateChanged(async (user) => {
+      if(user) {
+        currentUser = { uid: user.uid, displayName: user.displayName || user.phoneNumber || "User" };
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        await loadPosts();
+      } else {
+        currentUser = null;
+        localStorage.removeItem("currentUser");
+        renderPosts([]);
+      }
+    });
+    
+    window.loginWithGoogle = async function() {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        let result = await auth.signInWithPopup(provider);
+        toastMsg("✅", "Google orqali kirdingiz");
+        closePhoneModal();
+      } catch(e) { toastMsg("❌", e.message); }
+    };
+    
+    window.loginWithFacebook = async function() {
+      let provider = new firebase.auth.FacebookAuthProvider();
+      try {
+        let result = await auth.signInWithPopup(provider);
+        toastMsg("✅", "Facebook orqali kirdingiz");
+        closePhoneModal();
+      } catch(e) { toastMsg("❌", e.message); }
+    };
+    
+    let recaptchaVerifier = null;
+    let confirmationResult = null;
+    
+    window.sendVerificationCode = async function() {
+      let code = document.getElementById("countryCode").value;
+      let phone = document.getElementById("phoneNumber").value.replace(/\D/g, "");
+      if(!phone) { toastMsg("⚠️", "Telefon raqam kiriting"); return; }
+      let fullPhone = code + phone;
+      if(!recaptchaVerifier) {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", { size: "invisible" });
+      }
+      try {
+        confirmationResult = await auth.signInWithPhoneNumber(fullPhone, recaptchaVerifier);
+        document.getElementById("sendCodeBtn").style.display = "none";
+        document.getElementById("verifySection").style.display = "block";
+        toastMsg("📲", "Kod yuborildi");
+      } catch(e) { toastMsg("❌", e.message); }
+    };
+    
+    window.verifyCode = async function() {
+      let code = document.getElementById("codeInput").value;
+      if(!code) return;
+      try {
+        let result = await confirmationResult.confirm(code);
+        toastMsg("✅", "Telefon orqali kirdingiz");
+        closePhoneModal();
+      } catch(e) { toastMsg("❌", "Noto'g'ri kod"); }
+    };
+    
+    // Load real posts from Firestore
+    window.loadPosts = async function() {
+      if(!currentUser) { renderPosts([]); return; }
+      try {
+        let snapshot = await db.collection("posts").orderBy("createdAt", "desc").get();
+        posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderPosts(posts);
+      } catch(e) { console.error(e); renderPosts([]); }
+    };
+    
+    window.createPost = async function() {
+      if(!currentUser) { toastMsg("🔐", "Avval kiring"); return; }
+      let input = document.getElementById("postInput");
+      let text = input.value.trim();
+      if(!text) return toastMsg("⚠️", "Matn kiriting");
+      try {
+        await db.collection("posts").add({
+          text: text,
+          userId: currentUser.uid,
+          userName: currentUser.displayName || "User",
+          userAvatar: "🚗",
+          createdAt: new Date(),
+          likes: 0,
+          likedBy: []
+        });
+        input.value = "";
+        toastMsg("✅", "Post qo'shildi");
+        loadPosts();
+      } catch(e) { toastMsg("❌", e.message); }
+    };
+    
+    window.toggleLike = async function(postId) {
+      if(!currentUser) return;
+      let postRef = db.collection("posts").doc(postId);
+      let doc = await postRef.get();
+      if(doc.exists) {
+        let data = doc.data();
+        let liked = data.likedBy?.includes(currentUser.uid) || false;
+        if(liked) {
+          await postRef.update({
+            likes: firebase.firestore.FieldValue.increment(-1),
+            likedBy: firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+          });
+        } else {
+          await postRef.update({
+            likes: firebase.firestore.FieldValue.increment(1),
+            likedBy: firebase.firestore.FieldValue.arrayUnion(currentUser.uid)
+          });
+        }
+        loadPosts();
+      }
+    };
+    
+    await loadPosts();
+    
+  } catch(e) {
+    console.error("Firebase init error:", e);
+    setupDemoAuth();
+  }
+}
+
+// ============ DEMO MODE POST FUNKSIYALARI ============
+window.loadPosts = function() {
+  if(demoMode) {
+    renderPosts(demoPosts);
+  }
+};
+
+window.createPost = function() {
+  if(!currentUser && demoMode) {
+    toastMsg("🔐", "Avval kiring");
+    showPhoneLogin();
+    return;
+  }
+  let input = document.getElementById("postInput");
+  let text = input.value.trim();
+  if(!text) return toastMsg("⚠️", "Matn kiriting");
+  let newPost = {
+    id: Date.now(),
+    userName: currentUser?.displayName || "User",
+    userAvatar: "🚗",
+    text: text,
+    createdAt: new Date(),
+    likes: 0,
+    likedBy: []
+  };
+  demoPosts.unshift(newPost);
+  renderPosts(demoPosts);
+  input.value = "";
+  toastMsg("✅", "Post qo'shildi");
+};
+
+window.toggleLike = function(postId) {
+  let post = demoPosts.find(p => p.id == postId);
+  if(post) {
+    let liked = post.likedBy?.includes(currentUser?.uid);
+    if(liked) {
+      post.likes--;
+      post.likedBy = post.likedBy.filter(id => id !== currentUser?.uid);
+    } else {
+      post.likes++;
+      post.likedBy = [...(post.likedBy || []), currentUser?.uid];
+    }
+    renderPosts(demoPosts);
+  }
+};
+
+function renderPosts(postsArray) {
+  const container = document.getElementById("posts-list");
+  if(!postsArray.length) { container.innerHTML = "<div class='post' style='padding:16px; text-align:center;'>📝 Postlar yo'q. Birinchi bo'lib yozing!</div>"; return; }
+  container.innerHTML = postsArray.map(p => `
+    <div class="post">
+      <div class="post-header">
+        <div class="post-avatar">${p.userAvatar || "🚗"}</div>
+        <div><div class="post-user">${p.userName || "User"}</div><div class="post-time">${p.time || new Date(p.createdAt).toLocaleString()}</div></div>
+      </div>
+      <div class="post-actions">
+        <i class="fa-${p.likedBy?.includes(currentUser?.uid) ? "solid" : "regular"} fa-heart" onclick="toggleLike(${p.id})" style="color:${p.likedBy?.includes(currentUser?.uid) ? '#ed4956' : '#262626'}"></i>
+        <i class="fa-regular fa-comment" onclick="toastMsg('💬','Izoh qo'shish')"></i>
+        <i class="fa-regular fa-paper-plane" onclick="shareToTelegram('${p.text?.replace(/'/g, "\\'")}')"></i>
+      </div>
+      <div class="post-likes">${p.likes || 0} ta like</div>
+      <div class="post-caption"><strong>${p.userName}</strong> ${p.text}</div>
+    </div>
+  `).join("");
+}
+
+// ============ OTHER FUNCTIONS ============
+function toastMsg(icon, text) {
+  let t = document.getElementById("toastMsg");
+  t.innerText = icon + " " + text;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+// Shop & Cart
+const shopItems = [
+  { name: "Gloss PPF Premium", price: 850, old: 1100, img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&auto=format" },
+  { name: "Satin Matte PPF", price: 920, old: 1200, img: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=200&auto=format" },
+  { name: "Ceramic Coating Pro", price: 450, old: null, img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=200&auto=format" },
+  { name: "Premium Tinting", price: 280, old: 350, img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=200&auto=format" }
+];
+function renderShop() {
+  const grid = document.getElementById("shop-grid");
+  grid.innerHTML = shopItems.map(item => `
+    <div class="product-card">
+      <img class="product-img" src="${item.img}" alt="">
+      <div class="product-info">
+        <div class="product-name">${item.name}</div>
+        <div class="product-price">$${item.price} ${item.old ? `<span style="text-decoration:line-through; color:#8e8e8e;">$${item.old}</span>` : ""}</div>
+        <button class="product-btn" onclick="addToCart('${item.name}', ${item.price})">🛒 Savatga</button>
+      </div>
+    </div>
+  `).join("");
+  updateCartCount();
+}
+window.addToCart = function(name, price) {
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  toastMsg("🛒", name + " savatga qo'shildi");
+};
+function updateCartCount() { document.getElementById("cartCount").innerText = cart.length; }
+window.viewCart = function() {
+  if(cart.length === 0) return toastMsg("🛒", "Savat bo'sh");
+  let total = cart.reduce((s,i) => s + i.price, 0);
+  alert("Savat: " + cart.map(i => i.name).join(", ") + "\nJami: $" + total);
+};
+window.simulatePayment = function() {
+  let total = cart.reduce((s,i) => s+i.price, 0);
+  if(total === 0) return toastMsg("⚠️", "Savat bo'sh");
+  if(confirm(`Jami summa: $${total}. To'lovga o'tish?`)) {
+    toastMsg("💳", "To'lov simulyatsiyasi");
+    cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+  }
+};
+
+// Music
+const tracks = [
+  { name: "Antigravity Drift", artist: "DJ Antigravity", duration: 222 },
+  { name: "Night Ride Lofi", artist: "CyberBeats", duration: 255 },
+  { name: "Turbo Wave", artist: "SynthDrive", duration: 208 }
+];
+let currentTrack = 0, isPlaying = false, playInterval = null;
+function renderPlaylist() {
+  const container = document.getElementById("playlist-container");
+  container.innerHTML = tracks.map((t, i) => `<div class="post" style="padding:10px; margin-bottom:8px; cursor:pointer;" onclick="selectTrack(${i})">🎵 <strong>${t.name}</strong> — ${t.artist}</div>`).join("");
+}
+window.selectTrack = function(idx) {
+  currentTrack = idx;
+  document.getElementById("currentTrackName").innerText = tracks[idx].name;
+  document.getElementById("currentTrackArtist").innerText = tracks[idx].artist;
+  if(isPlaying) togglePlay();
+  document.getElementById("music-progress").value = 0;
+  toastMsg("🎵", tracks[idx].name);
+};
+window.togglePlay = function() {
+  let icon = document.getElementById("playPauseIcon");
+  let prog = document.getElementById("music-progress");
+  if(isPlaying) {
+    clearInterval(playInterval);
+    icon.classList.remove("fa-pause");
+    icon.classList.add("fa-play");
+    isPlaying = false;
+  } else {
+    icon.classList.remove("fa-play");
+    icon.classList.add("fa-pause");
+    isPlaying = true;
+    let val = prog.value;
+    playInterval = setInterval(() => {
+      if(val >= 100) { nextTrack(); val = 0; }
+      else { val += 1; prog.value = val; }
+    }, tracks[currentTrack].duration * 10);
+  }
+};
+window.prevTrack = function() { currentTrack = (currentTrack - 1 + tracks.length) % tracks.length; selectTrack(currentTrack); };
+window.nextTrack = function() { currentTrack = (currentTrack + 1) % tracks.length; selectTrack(currentTrack); };
+
+// AI Gemini
+window.sendAIMessage = async function() {
+  let input = document.getElementById("ai-input");
+  let msg = input.value.trim();
+  if(!msg) return;
+  let chatDiv = document.getElementById("ai-messages");
+  chatDiv.innerHTML += `<div class="message user"><div class="message-bubble">${msg}</div></div>`;
+  input.value = "";
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+  let key = document.getElementById("gemini-key").value || geminiKey;
+  if(!key) {
+    chatDiv.innerHTML += `<div class="message"><div class="message-bubble">⚠️ Gemini API kaliti yo'q. Sozlamalarga o'ting.</div></div>`;
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+    return;
+  }
+  try {
+    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [{ text: msg }] }] })
+    });
+    let data = await res.json();
+    let answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "Xatolik yuz berdi.";
+    chatDiv.innerHTML += `<div class="message"><div class="message-bubble">${answer}</div></div>`;
+  } catch(e) { chatDiv.innerHTML += `<div class="message"><div class="message-bubble">❌ API xatosi</div></div>`; }
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+};
+
+// Settings & Profile
+function loadSettings() {
+  document.getElementById("user-name").value = currentUser?.displayName || "";
+  document.getElementById("tg-username").value = tgUsername;
+  document.getElementById("wa-number").value = waNumber;
+  document.getElementById("gemini-key").value = geminiKey;
+}
+window.saveSettings = function() {
+  if(currentUser && demoMode) {
+    currentUser.displayName = document.getElementById("user-name").value;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }
+  tgUsername = document.getElementById("tg-username").value;
+  waNumber = document.getElementById("wa-number").value;
+  geminiKey = document.getElementById("gemini-key").value;
+  localStorage.setItem("tgUsername", tgUsername);
+  localStorage.setItem("waNumber", waNumber);
+  localStorage.setItem("geminiKey", geminiKey);
+  toastMsg("✅", "Sozlamalar saqlandi");
+};
+window.openProfileModal = function() {
+  document.getElementById("modal-name").value = currentUser?.displayName || "";
+  document.getElementById("profileModal").classList.add("open");
+};
+window.saveProfileModal = function() {
+  if(currentUser && demoMode) {
+    currentUser.displayName = document.getElementById("modal-name").value;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }
+  toastMsg("✅", "Profil yangilandi");
+  closeModal();
+};
+window.closeModal = () => document.getElementById("profileModal").classList.remove("open");
+
+// Phone Modal
+window.showPhoneLogin = function() {
+  document.getElementById("phoneModal").classList.add("open");
+};
+window.closePhoneModal = function() {
+  document.getElementById("phoneModal").classList.remove("open");
+  document.getElementById("sendCodeBtn").style.display = "block";
+  document.getElementById("verifySection").style.display = "none";
+};
+
+// Share functions
+window.shareToTelegram = function(customText) {
+  let text = customText ? encodeURIComponent(customText) : encodeURIComponent("NEXUS STORE – Avto himoya va tuning markazi!\nhttps://nexusstore.uz");
+  let link = tgUsername ? `https://t.me/${tgUsername.replace('@','')}` : `https://t.me/share/url?url=https://nexusstore.uz&text=${text}`;
+  window.open(link, "_blank");
+};
+window.shareToWhatsApp = function() {
+  let text = encodeURIComponent("NEXUS STORE – PPF, tuning va AI yordamchi");
+  let link = waNumber ? `https://wa.me/${waNumber.replace(/\D/g,'')}?text=${text}` : `https://wa.me/?text=${text}`;
+  window.open(link, "_blank");
+};
+
+window.logout = function() {
+  currentUser = null;
+  localStorage.removeItem("currentUser");
+  renderPosts([]);
+  toastMsg("👋", "Chiqildi");
+};
+
+function renderStories() {
+  document.getElementById("stories-container").innerHTML = `
+    <div class="story" onclick="toastMsg('➕','Story qo'shish')"><div class="story-ring"><div class="story-img">➕</div></div><div class="story-name">Siz</div></div>
+    <div class="story" onclick="toastMsg('🚗','Porsche GT3')"><div class="story-ring"><div class="story-img">🚗</div></div><div class="story-name">Porsche</div></div>
+    <div class="story" onclick="shareToTelegram()"><div class="story-ring" style="background:#229ED9;"><div class="story-img">✈️</div></div><div class="story-name">TG</div></div>
+  `;
+}
+
+function switchPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(`${pageId}-page`).classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active"));
+  document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add("active");
+}
+document.querySelectorAll(".nav-item").forEach(btn => {
+  btn.addEventListener("click", () => switchPage(btn.dataset.page));
+});
+
+function retrySetup() {
+  localStorage.removeItem("firebaseConfig");
+  location.reload();
+}
+
+// INIT
+renderShop();
+renderPlaylist();
+selectTrack(0);
+renderStories();
+updateCartCount();
+autoSetupFirebase();
+loadSettings();
+</script>
+</body>
+</html>
