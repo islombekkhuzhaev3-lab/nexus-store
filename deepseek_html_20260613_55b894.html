@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>NEXUS MARKET | OK.ru + Somon.tj + Instagram uslubi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a2e;
+      padding-bottom: 70px;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      z-index: 100;
+      height: 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 22px;
+      background: linear-gradient(135deg, #ff6200, #00c8ff, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .logo span {
+      font-size: 12px;
+      background: none;
+      -webkit-background-clip: unset;
+      color: #00c8ff;
+    }
+    .header-icons {
+      display: flex;
+      gap: 18px;
+    }
+    .header-icons i {
+      font-size: 22px;
+      cursor: pointer;
+      color: white;
+    }
+
+    /* ========== BOTTOM NAV ========== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 12px;
+      z-index: 100;
+      height: 58px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+    .nav-item {
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: #8e8e93;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      transition: all 0.2s;
+    }
+    .nav-item.active {
+      color: #ff6200;
+    }
+    .nav-item span {
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* ========== CONTAINER ========== */
+    .container {
+      max-width: 600px;
+      margin: 65px auto 0;
+      padding: 0 12px;
+    }
+    .page {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .page.active {
+      display: flex;
+    }
+
+    /* ========== STORIES ========== */
+    .stories {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .story {
+      text-align: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .story-ring {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #ff6200, #7c3aed);
+      border-radius: 50%;
+      padding: 2px;
+    }
+    .story-img {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background-color: #f2f2f2;
+    }
+    .story-name {
+      font-size: 11px;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ========== POST CREATOR ========== */
+    .post-creator {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .creator-avatar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #ff6200, #00c8ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+    .creator-input-area {
+      flex: 1;
+    }
+    .creator-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      resize: none;
+      font-family: inherit;
+      padding: 8px 0;
+    }
+    .creator-input::placeholder {
+      color: #b0b0b0;
+    }
+    .creator-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .media-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    .media-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #666;
+    }
+    .post-btn {
+      background: linear-gradient(135deg, #ff6200, #ff9f43);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    /* ========== POST ========== */
+    .post {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      gap: 12px;
+    }
+    .post-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #ff6200, #7c3aed);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      flex-shrink: 0;
+    }
+    .post-user-info {
+      flex: 1;
+    }
+    .post-username {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .post-time {
+      font-size: 10px;
+      color: #999;
+      margin-top: 2px;
+    }
+    .post-menu {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .post-media {
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      background: #000;
+    }
+    .post-actions {
+      display: flex;
+      gap: 20px;
+      padding: 10px 12px;
+    }
+    .post-actions i {
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .post-actions i:active {
+      transform: scale(0.95);
+    }
+    .post-actions .liked {
+      color: #ff3b6f;
+    }
+    .post-likes {
+      font-weight: 600;
+      font-size: 13px;
+      padding: 0 12px 4px;
+    }
+    .post-caption {
+      padding: 0 12px 12px;
+      font-size: 13px;
+    }
+    .post-caption strong {
+      margin-right: 6px;
+    }
+
+    /* ========== MARKETPLACE ========== */
+    .marketplace-header {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .marketplace-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .market-tab {
+      flex: 1;
+      background: #f0f0f0;
+      border: none;
+      padding: 10px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .market-tab.active {
+      background: linear-gradient(135deg, #ff6200, #ff9f43);
+      color: white;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+    }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 10px;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .product-price {
+      color: #ff6200;
+      font-weight: 800;
+      margin: 4px 0;
+    }
+    .product-seller {
+      font-size: 10px;
+      color: #999;
+    }
+    .product-btn {
+      width: 100%;
+      background: #ff6200;
+      border: none;
+      color: white;
+      padding: 8px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    /* ========== ADS SECTION ========== */
+    .ads-section {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .ads-header {
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .ad-card {
+      background: linear-gradient(135deg, #fff5e6, #fff0e0);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .ad-img {
+      width: 60px;
+      height: 60px;
+      background: #ff6200;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .ad-info {
+      flex: 1;
+    }
+    .ad-title {
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .ad-desc {
+      font-size: 11px;
+      color: #666;
+    }
+    .create-ad-btn {
+      background: linear-gradient(135deg, #00c8ff, #7c3aed);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* ========== PROFILE ========== */
+    .profile-header {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .profile-avatar {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #ff6200, #7c3aed);
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+    }
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin: 16px 0;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-number {
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: #999;
+    }
+
+    /* ========== SETTINGS ========== */
+    .settings-card {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #efefef;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .settings-item:last-child {
+      border-bottom: none;
+    }
+    .settings-item input, .settings-item select {
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      padding: 8px 14px;
+      font-family: inherit;
+    }
+
+    /* ========== MODAL ========== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s;
+    }
+    .modal.open {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      background: white;
+      width: 320px;
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+    }
+    .modal-content input, .modal-content select, .modal-content textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+    }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 13px;
+      z-index: 200;
+      opacity: 0;
+      transition: 0.2s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* ========== CHAT ========== */
+    .chat-messages {
+      background: white;
+      border-radius: 12px;
+      height: 350px;
+      overflow-y: auto;
+      padding: 12px;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 12px;
+    }
+    .message.user {
+      justify-content: flex-end;
+    }
+    .message-bubble {
+      background: #f0f0f0;
+      padding: 10px 14px;
+      border-radius: 20px;
+      max-width: 80%;
+      font-size: 13px;
+    }
+    .message.user .message-bubble {
+      background: linear-gradient(135deg, #ff6200, #ff9f43);
+      color: white;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      padding: 12px;
+      outline: none;
+    }
+    .chat-input button {
+      background: linear-gradient(135deg, #ff6200, #ff9f43);
+      border: none;
+      border-radius: 25px;
+      padding: 0 20px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">NEXUS<span>MARKET</span></div>
+  <div class="header-icons">
+    <i class="fa-regular fa-heart" onclick="toastMsg('❤️', 'Like bildirish')"></i>
+    <i class="fa-regular fa-comment" onclick="openChat()"></i>
+    <i class="fa-regular fa-user" onclick="openProfile()"></i>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" data-page="feed"><i class="fa-solid fa-house"></i><span>Лента</span></button>
+  <button class="nav-item" data-page="market"><i class="fa-solid fa-store"></i><span>Бозор</span></button>
+  <button class="nav-item" data-page="ads"><i class="fa-solid fa-chart-line"></i><span>Реклама</span></button>
+  <button class="nav-item" data-page="profile"><i class="fa-solid fa-user"></i><span>Профил</span></button>
+  <button class="nav-item" data-page="settings"><i class="fa-solid fa-gear"></i><span>Созламалар</span></button>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+  <!-- FEED PAGE -->
+  <div id="feed-page" class="page active">
+    <div class="stories" id="stories-container"></div>
+    <div class="post-creator">
+      <div class="creator-avatar" id="creatorAvatar">🚗</div>
+      <div class="creator-input-area">
+        <textarea rows="1" class="creator-input" id="postText" placeholder="Нима бўлаяпти? Расм ёки видео қўшинг..."></textarea>
+        <div class="creator-actions">
+          <div class="media-buttons">
+            <input type="file" id="postMediaInput" accept="image/*,video/*" style="display:none" onchange="previewMedia(this)">
+            <button class="media-btn" onclick="document.getElementById('postMediaInput').click()"><i class="fa-regular fa-image"></i></button>
+          </div>
+          <button class="post-btn" onclick="createPost()">✅ Ёзиш</button>
+        </div>
+      </div>
+    </div>
+    <div id="posts-list"></div>
+  </div>
+
+  <!-- MARKETPLACE PAGE -->
+  <div id="market-page" class="page">
+    <div class="marketplace-header">
+      <div class="marketplace-tabs">
+        <button class="market-tab active" onclick="filterMarket('all')">🏠 Барча</button>
+        <button class="market-tab" onclick="filterMarket('auto')">🚗 Авто</button>
+        <button class="market-tab" onclick="filterMarket('service')">🔧 Хизмат</button>
+        <button class="market-tab" onclick="openSellModal()">➕ Сотиш</button>
+      </div>
+    </div>
+    <div class="product-grid" id="market-grid"></div>
+  </div>
+
+  <!-- ADS PAGE -->
+  <div id="ads-page" class="page">
+    <div class="ads-section">
+      <div class="ads-header">
+        <span>⭐ Реклама бозори</span>
+        <span onclick="toastMsg('💡', 'Sizning reklamangiz')" style="color:#ff6200; cursor:pointer">Менинг</span>
+      </div>
+      <div id="ads-list"></div>
+      <button class="create-ad-btn" onclick="openCreateAdModal()">➕ Янги реклама қўшиш</button>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div id="profile-page" class="page">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar" onclick="changeProfilePhoto()">🚗</div>
+      <div class="profile-name" id="profileName">Меҳмон</div>
+      <div class="profile-stats">
+        <div class="stat"><div class="stat-number" id="postCount">0</div><div class="stat-label">Постлар</div></div>
+        <div class="stat"><div class="stat-number" id="productCount">0</div><div class="stat-label">Товарлар</div></div>
+        <div class="stat"><div class="stat-number" id="followersCount">0</div><div class="stat-label">Обуначилар</div></div>
+      </div>
+      <button class="post-btn" id="profileActionBtn" onclick="showLoginModal()">✅ Кириш</button>
+      <input type="file" id="profilePhotoInput" accept="image/*" style="display:none">
+    </div>
+    <div class="settings-card">
+      <div class="settings-item" onclick="openMyProducts()"><span>📦 Менинг товарларим</span><span>→</span></div>
+      <div class="settings-item" onclick="openMyAds()"><span>📢 Рекламаларим</span><span>→</span></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div id="settings-page" class="page">
+    <div class="settings-card">
+      <div class="settings-item"><span>👤 Исм</span><input type="text" id="user-name" placeholder="Исмингиз"></div>
+      <div class="settings-item"><span>✈️ Telegram</span><input type="text" id="tg-username" placeholder="@username"></div>
+      <div class="settings-item"><span>💬 WhatsApp</span><input type="text" id="wa-number" placeholder="+998901234567"></div>
+      <div class="settings-item"><span>📞 Телефон</span><input type="text" id="user-phone" placeholder="+998901234567"></div>
+      <div class="settings-item">
+        <button class="post-btn" onclick="saveSettings()">Сақлаш</button>
+        <button class="post-btn" style="background:#888" onclick="logout()">Чиқиш</button>
+      </div>
+      <div class="settings-item">
+        <button class="post-btn" onclick="loginWithGoogle()">🅶 Google</button>
+        <button class="post-btn" style="background:#1877F2" onclick="loginWithFacebook()">📘 Facebook</button>
+        <button class="post-btn" style="background:#34B7F1" onclick="showPhoneLogin()">📱 SMS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHONE LOGIN MODAL -->
+<div id="phoneModal" class="modal">
+  <div class="modal-content">
+    <h4>📱 Телефон орқали кириш</h4>
+    <select id="countryCode">
+      <option value="+998">🇺🇿 Ўзбекистон (+998)</option>
+      <option value="+1">🇺🇸 AQSH (+1)</option>
+      <option value="+44">🇬🇧 UK (+44)</option>
+      <option value="+7">🇷🇺 Россия (+7)</option>
+      <option value="+90">🇹🇷 Туркия (+90)</option>
+      <option value="+992">🇹🇯 Тожикистон (+992)</option>
+      <option value="+996">🇰🇬 Қирғизистон (+996)</option>
+    </select>
+    <input type="tel" id="phoneNumber" placeholder="90 123 45 67">
+    <div id="recaptcha-container"></div>
+    <button id="sendCodeBtn" class="post-btn" onclick="sendVerificationCode()">Код юбориш</button>
+    <div id="verifySection" style="display:none; margin-top:12px">
+      <input type="text" id="codeInput" placeholder="6 хонали код">
+      <button class="post-btn" onclick="verifyCode()">Тасдиқлаш</button>
+    </div>
+    <button class="post-btn" style="background:#ccc; margin-top:8px" onclick="closePhoneModal()">Бекор</button>
+  </div>
+</div>
+
+<!-- SELL PRODUCT MODAL -->
+<div id="sellModal" class="modal">
+  <div class="modal-content">
+    <h4>➕ Товар қўшиш</h4>
+    <input type="text" id="productName" placeholder="Товар номи">
+    <input type="number" id="productPrice" placeholder="Нарх (USD)">
+    <select id="productCategory">
+      <option value="auto">🚗 Авто товарлар</option>
+      <option value="service">🔧 Хизматлар</option>
+      <option value="other">📦 Бошқа</option>
+    </select>
+    <textarea id="productDesc" placeholder="Тавсиф..." rows="2"></textarea>
+    <input type="file" id="productImage" accept="image/*">
+    <div class="modal-buttons" style="display:flex; gap:8px; margin-top:12px">
+      <button class="post-btn" onclick="addProduct()">Сақлаш</button>
+      <button class="post-btn" style="background:#ccc" onclick="closeModal('sellModal')">Бекор</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE AD MODAL -->
+<div id="createAdModal" class="modal">
+  <div class="modal-content">
+    <h4>📢 Реклама яратиш</h4>
+    <input type="text" id="adTitle" placeholder="Сарлавҳа">
+    <textarea id="adDesc" placeholder="Реклама матни..." rows="2"></textarea>
+    <select id="adTarget">
+      <option value="all">Ҳамма учун</option>
+      <option value="auto">Авто ихлосмандлар</option>
+      <option value="tuning">Тюнинг қизиққанлар</option>
+    </select>
+    <input type="number" id="adBudget" placeholder="Бюджет (USD)">
+    <button class="post-btn" onclick="createAd()">Рекламани жойлаш</button>
+    <button class="post-btn" style="background:#ccc" onclick="closeModal('createAdModal')">Бекор</button>
+  </div>
+</div>
+
+<!-- CHAT MODAL -->
+<div id="chatModal" class="modal">
+  <div class="modal-content" style="width:340px; text-align:left">
+    <h4>💬 Глобал чат</h4>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message"><div class="message-bubble">👋 Салом! NEXUS MARKET га хуш келибсиз!</div></div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Хабар ёзинг...">
+      <button onclick="sendChatMessage()">Юбориш</button>
+    </div>
+    <button class="post-btn" style="margin-top:12px; background:#ccc" onclick="closeModal('chatModal')">Ёпиш</button>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast"></div>
+
+<script>
+  // ========== DATA ==========
+  let currentUser = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")) : null;
+  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+  let products = JSON.parse(localStorage.getItem("products")) || [
+    { id: 1, name: "Gloss PPF Premium", price: 850, category: "auto", seller: "Antigravity", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&auto=format", desc: "Yuqori sifatli himoya plyonkasi" },
+    { id: 2, name: "Satin Matte PPF", price: 920, category: "auto", seller: "Antigravity", img: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=200&auto=format", desc: "Mat himoya plyonkasi" },
+    { id: 3, name: "Ceramic Coating", price: 450, category: "service", seller: "DetailPro", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=200&auto=format", desc: "Keramik qoplama" }
+  ];
+  let ads = JSON.parse(localStorage.getItem("ads")) || [
+    { id: 1, title: "🔥 20% chegirma", desc: "Barcha PPF mahsulotlariga", budget: 50, target: "all" },
+    { id: 2, title: "🚗 Yangi tuning", desc: "Sizning mashinangizga", budget: 30, target: "auto" }
+  ];
+  let chatMessages = JSON.parse(localStorage.getItem("chatMessages")) || [
+    { user: "System", text: "👋 Салом! NEXUS MARKET га хуш келибсиз!", time: new Date() }
+  ];
+
+  // ========== HELPER ==========
+  function toastMsg(icon, text) {
+    let t = document.getElementById("toastMsg");
+    t.innerText = icon + " " + text;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2500);
+  }
+
+  function saveToLocalStorage() {
+    localStorage.setItem("posts", JSON.stringify(posts));
+    localStorage.setItem("products", JSON.stringify(products));
+    localStorage.setItem("ads", JSON.stringify(ads));
+    localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
+  }
+
+  // ========== POSTS ==========
+  function renderPosts() {
+    const container = document.getElementById("posts-list");
+    if (posts.length === 0) {
+      container.innerHTML = '<div class="post" style="padding:20px; text-align:center">📝 Постлар йўқ. Биринчи бўлиб ёзинг!</div>';
+      return;
+    }
+    container.innerHTML = posts.map(p => `
+      <div class="post">
+        <div class="post-header">
+          <div class="post-avatar">${p.userAvatar || "🚗"}</div>
+          <div class="post-user-info">
+            <div class="post-username">${p.userName}</div>
+            <div class="post-time">${p.time}</div>
+          </div>
+          <button class="post-menu">⋯</button>
+        </div>
+        ${p.media ? (p.mediaType === 'video' ? `<video class="post-media" controls src="${p.media}"></video>` : `<img class="post-media" src="${p.media}">`) : ""}
+        <div class="post-actions">
+          <i class="fa-${p.liked ? "solid" : "regular"} fa-heart" onclick="toggleLike(${p.id})" style="color:${p.liked ? '#ff3b6f' : '#666'}"></i>
+          <i class="fa-regular fa-comment" onclick="openChat()"></i>
+          <i class="fa-regular fa-paper-plane" onclick="sharePost('${p.text}')"></i>
+        </div>
+        <div class="post-likes">${p.likes} та like</div>
+        <div class="post-caption"><strong>${p.userName}</strong> ${p.text}</div>
+      </div>
+    `).join("");
+    if (currentUser) document.getElementById("postCount").innerText = posts.filter(p => p.userId === currentUser.id).length;
+  }
+
+  window.toggleLike = function(id) {
+    let p = posts.find(p => p.id === id);
+    if (p) {
+      p.liked = !p.liked;
+      p.likes += p.liked ? 1 : -1;
+      renderPosts();
+      saveToLocalStorage();
+    }
+  };
+
+  window.previewMedia = function(input) {
+    if (input.files && input.files[0]) toastMsg("📎", "Файл танланди: " + input.files[0].name);
+  };
+
+  window.createPost = function() {
+    if (!currentUser) { toastMsg("🔐", "Аввал киринг"); showLoginModal(); return; }
+    let text = document.getElementById("postText").value.trim();
+    if (!text) { toastMsg("⚠️", "Матн киритинг"); return; }
+    let newPost = {
+      id: Date.now(),
+      userId: currentUser.id,
+      userName: currentUser.name || "User",
+      userAvatar: currentUser.avatar || "🚗",
+      text: text,
+      time: new Date().toLocaleString(),
+      likes: 0,
+      liked: false,
+      media: null,
+      mediaType: null
+    };
+    posts.unshift(newPost);
+    document.getElementById("postText").value = "";
+    renderPosts();
+    saveToLocalStorage();
+    toastMsg("✅", "Пост қўшилди");
+  };
+
+  // ========== MARKETPLACE ==========
+  function renderMarket(category = "all") {
+    const container = document.getElementById("market-grid");
+    let filtered = category === "all" ? products : products.filter(p => p.category === category);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div style="grid-column:1/-1; padding:40px; text-align:center">📦 Товарлар йўқ</div>';
+      return;
+    }
+    container.innerHTML = filtered.map(p => `
+      <div class="product-card" onclick="showProductDetail(${p.id})">
+        <img class="product-img" src="${p.img}" alt="">
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price">$${p.price}</div>
+          <div class="product-seller">👤 ${p.seller}</div>
+          <button class="product-btn" onclick="event.stopPropagation(); contactSeller('${p.seller}')">💬 Сотуччига ёзиш</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  window.filterMarket = function(cat) {
+    document.querySelectorAll(".market-tab").forEach(t => t.classList.remove("active"));
+    event.target.classList.add("active");
+    renderMarket(cat);
+  };
+
+  window.openSellModal = function() {
+    if (!currentUser) { toastMsg("🔐", "Аввал киринг"); showLoginModal(); return; }
+    openModal("sellModal");
+  };
+
+  window.addProduct = function() {
+    let name = document.getElementById("productName").value;
+    let price = document.getElementById("productPrice").value;
+    let category = document.getElementById("productCategory").value;
+    let desc = document.getElementById("productDesc").value;
+    let imgFile = document.getElementById("productImage").files[0];
+    if (!name || !price) { toastMsg("⚠️", "Ном ва нарх киритинг"); return; }
+    let newProduct = {
+      id: Date.now(),
+      name: name,
+      price: parseInt(price),
+      category: category,
+      seller: currentUser.name,
+      img: imgFile ? URL.createObjectURL(imgFile) : "https://via.placeholder.com/200",
+      desc: desc
+    };
+    products.push(newProduct);
+    saveToLocalStorage();
+    renderMarket();
+    closeModal("sellModal");
+    toastMsg("✅", "Товар қўшилди");
+    document.getElementById("productName").value = "";
+    document.getElementById("productPrice").value = "";
+  };
+
+  window.showProductDetail = function(id) {
+    let p = products.find(p => p.id === id);
+    if (p) alert(`${p.name}\n$${p.price}\n${p.desc}\nСотуччи: ${p.seller}\n📞 Телефон: +998...`);
+  };
+
+  // ========== ADS ==========
+  function renderAds() {
+    const container = document.getElementById("ads-list");
+    if (ads.length === 0) {
+      container.innerHTML = '<div style="padding:20px; text-align:center">📢 Рекламалар йўқ</div>';
+      return;
+    }
+    container.innerHTML = ads.map(ad => `
+      <div class="ad-card" onclick="toastMsg('📢', 'Реклама: ${ad.title}')">
+        <div class="ad-img">📢</div>
+        <div class="ad-info">
+          <div class="ad-title">${ad.title}</div>
+          <div class="ad-desc">${ad.desc}</div>
+          <div class="ad-desc">💰 ${ad.budget} USD</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  window.openCreateAdModal = function() {
+    if (!currentUser) { toastMsg("🔐", "Аввал киринг"); showLoginModal(); return; }
+    openModal("createAdModal");
+  };
+
+  window.createAd = function() {
+    let title = document.getElementById("adTitle").value;
+    let desc = document.getElementById("adDesc").value;
+    let target = document.getElementById("adTarget").value;
+    let budget = document.getElementById("adBudget").value;
+    if (!title || !budget) { toastMsg("⚠️", "Сарлавҳа ва бюджет киритинг"); return; }
+    ads.push({ id: Date.now(), title: title, desc: desc, target: target, budget: parseInt(budget) });
+    saveToLocalStorage();
+    renderAds();
+    closeModal("createAdModal");
+    toastMsg("✅", "Реклама жойланди");
+  };
+
+  // ========== CHAT ==========
+  window.openChat = function() {
+    renderChat();
+    openModal("chatModal");
+  };
+
+  function renderChat() {
+    const container = document.getElementById("chatMessages");
+    container.innerHTML = chatMessages.map(m => `
+      <div class="message ${m.user === currentUser?.name ? 'user' : ''}">
+        <div class="message-bubble"><strong>${m.user}</strong><br>${m.text}</div>
+      </div>
+    `).join("");
+  }
+
+  window.sendChatMessage = function() {
+    let input = document.getElementById("chatInput");
+    let text = input.value.trim();
+    if (!text || !currentUser) { toastMsg("⚠️", "Киринг ва хабар ёзинг"); return; }
+    chatMessages.push({ user: currentUser.name, text: text, time: new Date() });
+    saveToLocalStorage();
+    renderChat();
+    input.value = "";
+  };
+
+  // ========== PROFILE ==========
+  function updateProfileUI() {
+    if (currentUser) {
+      document.getElementById("profileName").innerText = currentUser.name;
+      document.getElementById("profileAvatar").innerHTML = currentUser.avatar || "🚗";
+      document.getElementById("creatorAvatar").innerHTML = currentUser.avatar || "🚗";
+      document.getElementById("profileActionBtn").innerText = "✏️ Таҳрирлаш";
+      document.getElementById("profileActionBtn").onclick = () => openModal("profileEditModal");
+      document.getElementById("productCount").innerText = products.filter(p => p.seller === currentUser.name).length;
+    } else {
+      document.getElementById("profileName").innerText = "Меҳмон";
+      document.getElementById("profileAvatar").innerHTML = "🚗";
+      document.getElementById("creatorAvatar").innerHTML = "🚗";
+      document.getElementById("profileActionBtn").innerText = "✅ Кириш";
+      document.getElementById("profileActionBtn").onclick = () => showLoginModal();
+    }
+  }
+
+  window.openProfile = function() {
+    if (currentUser) openModal("profileEditModal");
+    else showLoginModal();
+  };
+
+  window.openMyProducts = function() {
+    let myProducts = products.filter(p => p.seller === currentUser?.name);
+    if (myProducts.length === 0) toastMsg("📦", "Сизнинг товарларингиз йўқ");
+    else alert("Менинг товарларим:\n" + myProducts.map(p => `${p.name} - $${p.price}`).join("\n"));
+  };
+
+  window.openMyAds = function() {
+    let myAds = ads.filter(a => a.userId === currentUser?.id);
+    if (myAds.length === 0) toastMsg("📢", "Сизнинг рекламаларингиз йўқ");
+    else alert("Рекламаларим:\n" + myAds.map(a => a.title).join("\n"));
+  };
+
+  // ========== AUTH (SMS + WA + TG) ==========
+  window.loginWithGoogle = function() {
+    currentUser = { id: "google_" + Date.now(), name: "Google User", avatar: "🅶", phone: "" };
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    updateProfileUI();
+    closePhoneModal();
+    toastMsg("✅", "Google орқали кирдингиз");
+    renderPosts();
+  };
+
+  window.loginWithFacebook = function() {
+    currentUser = { id: "fb_" + Date.now(), name: "FB User", avatar: "📘", phone: "" };
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    updateProfileUI();
+    closePhoneModal();
+    toastMsg("✅", "Facebook орқали кирдингиз");
+    renderPosts();
+  };
+
+  window.showPhoneLogin = () => {
+    openModal("phoneModal");
+  };
+
+  window.sendVerificationCode = () => {
+    let phone = document.getElementById("phoneNumber").value;
+    if (!phone) { toastMsg("⚠️", "Телефон рақам киритинг"); return; }
+    document.getElementById("sendCodeBtn").style.display = "none";
+    document.getElementById("verifySection").style.display = "block";
+    toastMsg("📲", "Код юборилди: 123456 (демо)");
+    window.demoCode = "123456";
+  };
+
+  window.verifyCode = () => {
+    let code = document.getElementById("codeInput").value;
+    if (code === "123456" || code === window.demoCode) {
+      let phone = document.getElementById("phoneNumber").value;
+      currentUser = { id: "phone_" + Date.now(), name: "User_" + phone.slice(-4), avatar: "📱", phone: phone };
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      updateProfileUI();
+      closePhoneModal();
+      toastMsg("✅", "Телефон орқали кирдингиз");
+      renderPosts();
+    } else {
+      toastMsg("❌", "Нотўғри код");
+    }
+  };
+
+  function closePhoneModal() {
+    closeModal("phoneModal");
+    document.getElementById("sendCodeBtn").style.display = "block";
+    document.getElementById("verifySection").style.display = "none";
+  }
+
+  window.logout = function() {
+    currentUser = null;
+    localStorage.removeItem("currentUser");
+    updateProfileUI();
+    renderPosts();
+    toastMsg("👋", "Чиқилди");
+  };
+
+  // ========== SETTINGS ==========
+  function saveSettings() {
+    if (currentUser) {
+      currentUser.name = document.getElementById("user-name").value || currentUser.name;
+      currentUser.phone = document.getElementById("user-phone").value;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      updateProfileUI();
+    }
+    localStorage.setItem("tgUsername", document.getElementById("tg-username").value);
+    localStorage.setItem("waNumber", document.getElementById("wa-number").value);
+    toastMsg("✅", "Созламалар сақланди");
+  }
+
+  function loadSettings() {
+    document.getElementById("tg-username").value = localStorage.getItem("tgUsername") || "";
+    document.getElementById("wa-number").value = localStorage.getItem("waNumber") || "";
+    if (currentUser) {
+      document.getElementById("user-name").value = currentUser.name || "";
+      document.getElementById("user-phone").value = currentUser.phone || "";
+    }
+  }
+
+  // ========== SHARE ==========
+  window.sharePost = (text) => {
+    let tg = localStorage.getItem("tgUsername") || "";
+    let wa = localStorage.getItem("waNumber") || "";
+    let msg = encodeURIComponent(text + "\n\nNEXUS MARKET - www.nexusmarket.uz");
+    if (tg) window.open(`https://t.me/${tg.replace('@','')}?text=${msg}`, "_blank");
+    else if (wa) window.open(`https://wa.me/${wa.replace(/\D/g,'')}?text=${msg}`, "_blank");
+    else window.open(`https://t.me/share/url?url=https://nexusmarket.uz&text=${msg}`, "_blank");
+    toastMsg("✈️", "Улашилди");
+  };
+
+  window.contactSeller = (seller) => {
+    let wa = localStorage.getItem("waNumber");
+    if (wa) window.open(`https://wa.me/${wa.replace(/\D/g,'')}?text=Салом! ${seller} сизнинг товарингиз қизиқти`, "_blank");
+    else toastMsg("💬", "WhatsApp рақамингизни созламаларга киритинг");
+  };
+
+  // ========== STORIES ==========
+  function renderStories() {
+    document.getElementById("stories-container").innerHTML = `
+      <div class="story" onclick="toastMsg('➕', 'Story қўшиш')"><div class="story-ring"><div class="story-img">➕</div></div><div class="story-name">Сиз</div></div>
+      <div class="story" onclick="toastMsg('🚗', 'Porsche GT3')"><div class="story-ring"><div class="story-img">🚗</div></div><div class="story-name">Porsche</div></div>
+      <div class="story" onclick="openChat()"><div class="story-ring" style="background:#25D366"><div class="story-img">💬</div></div><div class="story-name">Чат</div></div>
+    `;
+  }
+
+  // ========== MODAL ==========
+  function openModal(id) { document.getElementById(id).classList.add("open"); }
+  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+  // ========== NAVIGATION ==========
+  function switchPage(pageId) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(`${pageId}-page`).classList.add("active");
+    document.querySelectorAll(".nav-item").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add("active");
+  }
+  document.querySelectorAll(".nav-item").forEach(btn => {
+    btn.addEventListener("click", () => switchPage(btn.dataset.page));
+  });
+
+  // ========== INIT ==========
+  renderStories();
+  renderPosts();
+  renderMarket();
+  renderAds();
+  loadSettings();
+  if (localStorage.getItem("currentUser")) {
+    currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    updateProfileUI();
+  }
+
+  window.toastMsg = toastMsg;
+  window.openModal = openModal;
+  window.closeModal = closeModal;
+  window.showLoginModal = () => openModal("phoneModal");
+</script>
+</body>
+</html>
